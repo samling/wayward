@@ -11,6 +11,7 @@ pub(crate) enum BarItemState {
     Workspaces(WorkspaceState),
     Battery(BatteryState),
     Clock(ClockState),
+    Disk(DiskState),
     Systray(SystrayState),
     Notifications(NotificationState),
     Updates(UpdatesState),
@@ -76,6 +77,7 @@ impl BarItemState {
             Self::Workspaces(_) => "workspaces",
             Self::Battery(_) => "battery",
             Self::Clock(_) => "clock",
+            Self::Disk(_) => "disk",
             Self::Systray(_) => "systray",
             Self::Notifications(_) => "notifications",
             Self::Updates(_) => "updates",
@@ -110,4 +112,15 @@ pub(crate) enum BrightnessState {
 #[derive(Clone, Debug)]
 pub(crate) struct BrightnessSnapshot {
     pub(crate) percent: f64,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum DiskState {
+    Ready(DiskSnapshot),
+    Unavailable,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct DiskSnapshot {
+    pub(crate) disks: Vec<wayle_sysinfo::types::DiskData>,
 }
