@@ -1,5 +1,7 @@
 mod component;
+mod format;
 mod service;
+mod view_model;
 
 use crate::bar::state::{BarItemState, DiskState};
 use crate::bar::widget::{
