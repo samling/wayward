@@ -2,6 +2,7 @@ pub(crate) mod action_menu;
 pub(crate) mod battery;
 pub(crate) mod brightness;
 pub(crate) mod clock;
+pub(crate) mod disk;
 pub(crate) mod notifications;
 pub(crate) mod systray;
 pub(crate) mod updates;

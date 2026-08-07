@@ -8,6 +8,7 @@ pub(crate) static WIDGETS: &[&dyn BarWidget] = &[
     &widgets::battery::WIDGET,
     &widgets::brightness::WIDGET,
     &widgets::clock::WIDGET,
+    &widgets::disk::WIDGET,
     &widgets::notifications::WIDGET,
     &widgets::systray::WIDGET,
     &widgets::updates::WIDGET,

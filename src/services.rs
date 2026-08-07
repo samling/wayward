@@ -7,6 +7,7 @@ use wayle_brightness::BrightnessService;
 use wayle_niri::NiriService;
 use wayle_notification::NotificationService;
 use wayle_power_profiles::PowerProfilesService;
+use wayle_sysinfo::SysinfoService;
 use wayle_systray::SystemTrayService;
 use zbus::zvariant::OwnedObjectPath;
 
@@ -22,6 +23,7 @@ pub(crate) struct ShellServices {
     pub(crate) niri: Option<Arc<NiriService>>,
     pub(crate) notification: Option<Arc<NotificationService>>,
     pub(crate) power_profiles: Option<Arc<PowerProfilesService>>,
+    pub(crate) sysinfo: Option<Arc<SysinfoService>>,
     pub(crate) systray: Option<Arc<SystemTrayService>>,
 }
 
@@ -103,6 +105,9 @@ pub(crate) async fn init_shell_services() -> ShellServices {
         }
     };
 
+    let sysinfo = Some(Arc::new(SysinfoService::builder().build()));
+    tracing::info!("SysInfo service started");
+
     let systray = match SystemTrayService::new().await {
         Ok(service) => {
             tracing::info!("System tray service started");
@@ -121,6 +126,7 @@ pub(crate) async fn init_shell_services() -> ShellServices {
         niri,
         notification,
         power_profiles,
+        sysinfo,
         systray,
     }
 }

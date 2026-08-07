@@ -82,7 +82,6 @@ impl SimpleComponent for BatteryComponent {
                     set_text: &model.view_model.energy_rate_text,
                 }
             }
-
         }
     }
 
