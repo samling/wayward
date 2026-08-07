@@ -367,9 +367,15 @@ popover.dropdown arrow {
     min-width: 320px;
 }
 
+.disk-dropdown-content {
+    min-width: 320px;
+}
+
 .clock-dropdown-title,
 .battery-dropdown-title,
-.battery-dropdown-header {
+.battery-dropdown-header,
+.disk-dropdown-title,
+.disk-dropdown-header {
     margin-bottom: 0.25em;
 }
 
@@ -647,6 +653,27 @@ button.control-toggle.toggle:checked {
     background-image: none;
     border-color: var(--md-sys-color-primary, rgba(137, 180, 250, 0.75));
     box-shadow: none;
+}
+
+/* Disk */
+.disk-list {
+    background: none;
+}
+
+.disk-row {
+    padding: 0.5em 0.25em;
+}
+
+.disk-row-mount {
+    font-weight: 550;
+}
+
+.disk-row-usage {
+    opacity: 0.72;
+}
+
+.disk-row-meter {
+    min-height: 6px;
 }
 
 /* Systray */

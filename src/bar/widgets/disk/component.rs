@@ -1,10 +1,13 @@
 use crate::bar::layout::BarEdge;
+use crate::bar::state::DiskSnapshot;
 use crate::bar::widget::BarRegion;
 use relm4::Controller;
 use relm4::gtk;
 use relm4::gtk::prelude::{OrientableExt, WidgetExt};
 use relm4::prelude::*;
-use wayle_sysinfo::SysinfoService;
+
+use super::dropdown::{DiskDropdown, DiskDropdownInit, DiskDropdownInput};
+use super::view_model::DiskViewModel;
 
 pub(super) struct DiskComponent {
     view_model: DiskViewModel,
@@ -96,26 +99,25 @@ impl SimpleComponent for DiskComponent {
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
         match msg {
             DiskInput::SetPlacement { edge, region } => {
-                self.edge = edge,
-                self.region = region,
+                self.edge = edge;
+                self.region = region;
                 self.dropdown
                     .emit(DiskDropdownInput::SetPlacement { edge, region });
             }
             DiskInput::SetSnapshot(snapshot) => {
-                let view_model = DiskViewModel::from_snapshot(&snapshot);
-
-                self.dropdown.emit(DiskDropdownInput::SetSnapshot {
-                    view_model: view_model.clone(),
-                });
-
-                self.view_model = view_model;
+                self.set_view_model(DiskViewModel::from_snapshot(&snapshot));
             }
             DiskInput::SetUnavailable => {
-                let view_model = DiskViewModel::unavailable();
-                self.dropdown
-                    .emit(DiskDropdownInput::SetViewModel(view_model.clone()));
-                self.view_model = view_model;
+                self.set_view_model(DiskViewModel::unavailable());
             }
         }
+    }
+}
+
+impl DiskComponent {
+    fn set_view_model(&mut self, view_model: DiskViewModel) {
+        self.dropdown
+            .emit(DiskDropdownInput::SetViewModel(view_model.clone()));
+        self.view_model = view_model;
     }
 }

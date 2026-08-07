@@ -1,5 +1,7 @@
 mod component;
+mod dropdown;
 mod format;
+mod row;
 mod service;
 mod view_model;
 
@@ -13,6 +15,8 @@ use relm4::Sender;
 use relm4::gtk;
 use relm4::gtk::glib::object::Cast;
 use relm4::prelude::*;
+
+use self::component::{DiskComponent, DiskInit, DiskInput};
 
 struct DiskRuntime {
     controller: Controller<DiskComponent>,
@@ -56,7 +60,7 @@ impl BarWidget for DiskWidget {
         _instance: &WidgetInstance,
         context: &WidgetBuildContext,
     ) -> Box<dyn BarWidgetRuntime> {
-        let controller = DiskComponent::build()
+        let controller = DiskComponent::builder()
             .launch(DiskInit {
                 edge: context.bar.edge,
                 region: context.bar.region,
@@ -77,7 +81,7 @@ impl BarWidget for DiskWidget {
     ) -> Option<relm4::JoinHandle<()>> {
         Some(service::start(
             sender,
-            services.disk.clone(),
+            services.sysinfo.clone(),
         ))
     }
 }

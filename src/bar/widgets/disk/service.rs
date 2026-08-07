@@ -1,6 +1,6 @@
 use crate::bar::state::{BarItemState, DiskSnapshot, DiskState};
 use crate::shell::ShellMsg;
-use futures::{FutureExt, StreamExt, future, select};
+use futures::StreamExt;
 use relm4::Sender;
 use std::sync::Arc;
 use wayle_sysinfo::SysinfoService;
@@ -23,26 +23,13 @@ async fn run_disk_watcher(
         return;
     };
 
-    send_disk_snapshot(&sender, service.as_ref());
-}
+    let mut disk_updates = service.disks.watch();
 
-fn send_disk_snapshot(
-    sender: &Sender<ShellMsg>,
-    service: &SysinfoService,
-) {
-    let snapshot = snapshot_from_services(service);
-
-    let _ = sender.send(disk_message(DiskState::Ready(snapshot)));
-}
-
-pub(super) fn snapshot_from_services(
-    service: &SysinfoService,
-) -> DiskSnapshot {
-    let disks = service.disks.get();
-
-    DiskSnapshot {
-        disks,
+    while let Some(disks) = disk_updates.next().await {
+        let _ = sender.send(disk_message(DiskState::Ready(DiskSnapshot { disks })));
     }
+
+    let _ = sender.send(disk_message(DiskState::Unavailable));
 }
 
 fn disk_message(state: DiskState) -> ShellMsg {
