@@ -32,7 +32,7 @@ macro_rules! widget_surface_color_settings {
                 path: &["style", $group, "widget-border-color"],
                 setting: Some(SettingUiSpec::Color {
                     label: "Widget border color",
-                    default: ColorDefault::Palette("outline-variant"),
+                    default: ColorDefault::Inherit("widget-border-color"),
                     opacity_default: 8,
                 }),
                 variable: concat!("--", $variable, "-widget-border-color"),
