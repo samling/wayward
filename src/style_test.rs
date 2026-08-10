@@ -347,8 +347,8 @@ fn generated_style_config_only_emits_shared_widget_surface_defaults() {
     assert!(css.contains("--bar-widget-background-color: transparent;"));
     // Per-widget background inherits the bar global by default, so it is not emitted.
     assert!(!css.contains("--brightness-widget-background-color"));
-    // Border keeps its shared default.
-    assert!(css.contains("--brightness-widget-border-color: rgba(241, 243, 244, 0.080);"));
+    // Per-widget border inherits the bar global too, so it is not emitted.
+    assert!(!css.contains("--brightness-widget-border-color"));
     assert!(!css.contains("--volume-widget-border-width: 0px;"));
 }
 
