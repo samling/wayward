@@ -20,6 +20,7 @@ pub(crate) struct ShellServices {
     pub(crate) audio: Option<Arc<AudioService>>,
     pub(crate) battery: Option<Arc<BatteryService>>,
     pub(crate) brightness: Option<Arc<BrightnessService>>,
+    pub(crate) _control: Option<zbus::Connection>,
     pub(crate) niri: Option<Arc<NiriService>>,
     pub(crate) notification: Option<Arc<NotificationService>>,
     pub(crate) power_profiles: Option<Arc<PowerProfilesService>>,
@@ -94,6 +95,17 @@ pub(crate) async fn init_shell_services() -> ShellServices {
         }
     };
 
+    let control = match crate::control::start(notification.clone()).await {
+        Ok(connection) => {
+            tracing::info!("Control service started");
+            Some(connection)
+        }
+        Err(error) => {
+            tracing::error!("Failed to start control service: {error}");
+            None
+        }
+    };
+
     let power_profiles = match PowerProfilesService::new().await {
         Ok(service) => {
             tracing::info!("Power profiles service started");
@@ -123,6 +135,7 @@ pub(crate) async fn init_shell_services() -> ShellServices {
         audio,
         battery,
         brightness,
+        _control: control,
         niri,
         notification,
         power_profiles,

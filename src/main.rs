@@ -1,5 +1,6 @@
 mod bar;
 mod config;
+mod control;
 mod file_watch;
 mod notifications;
 mod osd;
@@ -15,6 +16,17 @@ use tracing_subscriber::EnvFilter;
 fn main() {
     if std::env::args().any(|arg| arg == "--print-default-style-config") {
         print!("{}", style::default_style_config());
+        return;
+    }
+
+    if std::env::args().any(|arg| arg == "dismiss-notifications") {
+        let runtime = tokio::runtime::Runtime::new().expect("failed to create Tokio runtime");
+
+        if let Err(error) = runtime.block_on(control::dismiss_notifications()) {
+            eprintln!("failed to dismiss wayward notifications: {error}");
+            std::process::exit(1);
+        }
+
         return;
     }
 

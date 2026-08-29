@@ -14,10 +14,7 @@ pub(super) fn start(
     })
 }
 
-async fn run_disk_watcher(
-    sender: Sender<ShellMsg>,
-    service: Option<Arc<SysinfoService>>,
-) {
+async fn run_disk_watcher(sender: Sender<ShellMsg>, service: Option<Arc<SysinfoService>>) {
     let Some(service) = service else {
         let _ = sender.send(disk_message(DiskState::Unavailable));
         return;
