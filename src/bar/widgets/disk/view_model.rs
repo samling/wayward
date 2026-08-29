@@ -4,7 +4,7 @@ use crate::bar::state::DiskSnapshot;
 use wayle_sysinfo::types::DiskData;
 
 use super::format::{
-    DISK_ICON, disk_bytes_text, disk_tooltip_text, disk_usage_percent_text, initial_text
+    DISK_ICON, disk_bytes_text, disk_tooltip_text, disk_usage_percent_text, initial_text,
 };
 
 const PRIMARY_MOUNT: &str = "/";
@@ -73,8 +73,8 @@ impl DiskViewModel {
             rows: disks
                 .iter()
                 .map(|disk| DiskRowViewModel::from_disk(disk))
-                .collect()
-        }    
+                .collect(),
+        }
     }
 }
 

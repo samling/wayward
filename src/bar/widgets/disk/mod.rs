@@ -79,9 +79,6 @@ impl BarWidget for DiskWidget {
         sender: Sender<ShellMsg>,
         services: &crate::services::ShellServices,
     ) -> Option<relm4::JoinHandle<()>> {
-        Some(service::start(
-            sender,
-            services.sysinfo.clone(),
-        ))
+        Some(service::start(sender, services.sysinfo.clone()))
     }
 }
